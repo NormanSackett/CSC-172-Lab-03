@@ -76,6 +76,8 @@ public final class In {
     //// end: section (1 of 2) of code duplicated from In to StdIn.
 
     private Scanner scanner;
+    
+    private String fileName;
 
    /**
      * Initializes an input stream from standard input.
@@ -136,6 +138,7 @@ public final class In {
         try {
             // for consistency with StdIn, wrap with BufferedInputStream instead of use
             // file as argument to Scanner
+        	fileName = file.getName();
             FileInputStream fis = new FileInputStream(file);
             scanner = new Scanner(new BufferedInputStream(fis), CHARSET_NAME);
             scanner.useLocale(LOCALE);
@@ -159,6 +162,7 @@ public final class In {
         try {
             // first try to read file from local file system
             File file = new File(name);
+            fileName = name;
             if (file.exists()) {
                 // for consistency with StdIn, wrap with BufferedInputStream instead of use
                 // file as argument to Scanner
@@ -218,6 +222,11 @@ public final class In {
      */
     public boolean exists()  {
         return scanner != null;
+    }
+    
+    // returns the file name for the scanner
+    public String getFileName() {
+    	return fileName;
     }
     
     ////  begin: section (2 of 2) of code duplicated from In to StdIn,
@@ -522,9 +531,9 @@ public final class In {
      *
      * @return all remaining lines in this input stream, as an array of integers
      */
-    public int[] readAllInts() {
+    public Integer[] readAllInts() {
         String[] fields = readAllStrings();
-        int[] vals = new int[fields.length];
+        Integer[] vals = new Integer[fields.length];
         for (int i = 0; i < fields.length; i++)
             vals[i] = Integer.parseInt(fields[i]);
         return vals;
@@ -576,7 +585,7 @@ public final class In {
      * @deprecated Replaced by {@code new In(filename)}.{@link #readAllInts()}.
      */
     @Deprecated
-    public static int[] readInts(String filename) {
+    public static Integer[] readInts(String filename) {
         return new In(filename).readAllInts();
     }
 
@@ -614,7 +623,7 @@ public final class In {
      * @deprecated Replaced by {@link StdIn#readAllInts()}.
      */
     @Deprecated
-    public static int[] readInts() {
+    public static Integer[] readInts() {
         return new In().readAllInts();
     }
 
